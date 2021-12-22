@@ -28,10 +28,7 @@ class MapSearchCompleterResultsViewController: UIViewController {
         
         mapSearchCompleter
             .locationResults
-            .map({ results -> [MKLocalSearchCompletion] in
-                print("poop")
-                return results
-            })
+            .map({ $0 })
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { _ in }) { results in
                 self.tableView.reloadData()

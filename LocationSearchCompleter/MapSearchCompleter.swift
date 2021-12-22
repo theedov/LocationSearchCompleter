@@ -19,7 +19,7 @@ class MapSearchCompleter: NSObject {
     
     override init() {
         super.init()
-        searchCompleter.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -25.2744, longitude: 133.7751), latitudinalMeters: 20000, longitudinalMeters: 20000)
+        searchCompleter.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -25.2744, longitude: 133.7751), span: MKCoordinateSpan(latitudeDelta: 40, longitudeDelta: 40))
         searchCompleter.resultTypes = [.address]
         searchCompleter.delegate = self
         
@@ -30,7 +30,6 @@ class MapSearchCompleter: NSObject {
             .sink { completion in
                 print(completion)
             } receiveValue: { results in
-                print("HMMM")
                 self.locationResults.send(results)
             }
             .store(in: &cancellables)
@@ -47,8 +46,9 @@ class MapSearchCompleter: NSObject {
 
 extension MapSearchCompleter: MKLocalSearchCompleterDelegate {
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        let results = completer.results.filter({$0.title.lowercased().contains("australia") || $0.subtitle.lowercased().contains("australia")})
+//        let results = completer.results.filter({$0.title.lowercased().contains("australia") || $0.subtitle.lowercased().contains("australia")})
         
-        currentPromise?(.success(results))
+        currentPromise?(.success(completer.results))
+        print(completer.region)
     }
 }

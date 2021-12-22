@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import MapKit
 
 class ViewController: UIViewController {
     private let searchController: UISearchController = {
@@ -16,6 +17,14 @@ class ViewController: UIViewController {
         
         return searchController
     }()
+        
+    private let mapView: MKMapView = {
+        let mapView = MKMapView()
+        mapView.translatesAutoresizingMaskIntoConstraints = false
+        mapView.setRegion(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -25.2744, longitude: 133.7751), span: MKCoordinateSpan(latitudeDelta: 40, longitudeDelta: 40)), animated: true)
+        return mapView
+    }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,19 +32,15 @@ class ViewController: UIViewController {
         view.backgroundColor = .systemMint
         navigationItem.title = "Search Location"
         navigationItem.searchController = searchController
+        
+        view.addSubview(mapView)
+        NSLayoutConstraint.activate([
+            mapView.topAnchor.constraint(equalTo: view.topAnchor),
+            mapView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
     }
 
 
 }
-
-//extension ViewController: UISearchResultsUpdating {
-//    func updateSearchResults(for searchController: UISearchController) {
-//        let text = searchController.searchBar.text.publisher
-//
-//        text
-//            .assign(to: \.searchTerm, on: mapSearchCompleter)
-//            .store(in: &cancellables)
-//
-//    }
-//}
-//
